@@ -12,7 +12,7 @@ import 'internal/core_parser.dart';
 import 'internal/flattener.dart';
 import 'internal/margin_vertical.dart';
 import 'internal/platform_specific/fallback.dart'
-    if (dart.library.io) 'internal/platform_specific/io.dart';
+if (dart.library.io) 'internal/platform_specific/io.dart';
 
 /// A factory to build widgets.
 class WidgetFactory {
@@ -55,12 +55,12 @@ class WidgetFactory {
 
   /// Builds [Align].
   Widget? buildAlign(
-    BuildMetadata meta,
-    Widget child,
-    AlignmentGeometry alignment, {
-    double? heightFactor,
-    double? widthFactor,
-  }) =>
+      BuildMetadata meta,
+      Widget child,
+      AlignmentGeometry alignment, {
+        double? heightFactor,
+        double? widthFactor,
+      }) =>
       Align(
         alignment: alignment,
         heightFactor: heightFactor,
@@ -70,10 +70,10 @@ class WidgetFactory {
 
   /// Builds [AspectRatio].
   Widget? buildAspectRatio(
-    BuildMetadata meta,
-    Widget child,
-    double aspectRatio,
-  ) =>
+      BuildMetadata meta,
+      Widget child,
+      double aspectRatio,
+      ) =>
       AspectRatio(aspectRatio: aspectRatio, child: child);
 
   /// Builds body widget.
@@ -111,9 +111,9 @@ class WidgetFactory {
 
   /// Builds column placeholder.
   WidgetPlaceholder? buildColumnPlaceholder(
-    BuildMetadata meta,
-    Iterable<WidgetPlaceholder> children,
-  ) {
+      BuildMetadata meta,
+      Iterable<WidgetPlaceholder> children,
+      ) {
     if (children.isEmpty) {
       return null;
     }
@@ -130,10 +130,10 @@ class WidgetFactory {
 
   /// Builds [Column].
   Widget buildColumnWidget(
-    BuildContext context,
-    List<Widget> children, {
-    TextDirection? dir,
-  }) {
+      BuildContext context,
+      List<Widget> children, {
+        TextDirection? dir,
+      }) {
     if (children.length == 1) {
       return children.first;
     }
@@ -152,13 +152,13 @@ class WidgetFactory {
   /// for more information regarding `content-box` (the default)
   /// and `border-box` (set [isBorderBox] to use).
   Widget? buildDecoration(
-    BuildMetadata meta,
-    Widget child, {
-    BoxBorder? border,
-    BorderRadius? borderRadius,
-    Color? color,
-    bool isBorderBox = true,
-  }) {
+      BuildMetadata meta,
+      Widget child, {
+        BoxBorder? border,
+        BorderRadius? borderRadius,
+        Color? color,
+        bool isBorderBox = true,
+      }) {
     if (border == null && borderRadius == null && color == null) {
       return child;
     }
@@ -168,7 +168,7 @@ class WidgetFactory {
     final grandChild = container?.child ?? decoratedBox?.child;
     final prevDeco = container?.decoration ?? decoratedBox?.decoration;
     final baseDeco =
-        prevDeco is BoxDecoration ? prevDeco : const BoxDecoration();
+    prevDeco is BoxDecoration ? prevDeco : const BoxDecoration();
     final decoration = baseDeco.copyWith(
       border: border,
       borderRadius: borderRadius,
@@ -190,16 +190,16 @@ class WidgetFactory {
 
   /// Builds 1-pixel-height divider.
   Widget? buildDivider(BuildMetadata meta) => const DecoratedBox(
-        decoration: BoxDecoration(color: Color.fromRGBO(0, 0, 0, 1)),
-        child: SizedBox(height: 1),
-      );
+    decoration: BoxDecoration(color: Color.fromRGBO(0, 0, 0, 1)),
+    child: SizedBox(height: 1),
+  );
 
   /// Builds [GestureDetector].
   Widget? buildGestureDetector(
-    BuildMetadata meta,
-    Widget child,
-    GestureTapCallback onTap,
-  ) =>
+      BuildMetadata meta,
+      Widget child,
+      GestureTapCallback onTap,
+      ) =>
       MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(onTap: onTap, child: child),
@@ -234,7 +234,7 @@ class WidgetFactory {
       built = buildGestureDetector(
         meta,
         built,
-        () => _widget?.onTapImage?.call(data),
+            () => _widget?.onTapImage?.call(data),
       );
     }
 
@@ -263,21 +263,21 @@ class WidgetFactory {
     final semanticLabel = image?.alt ?? image?.title;
     return Image(
       errorBuilder: (context, error, _) =>
-          onErrorBuilder(context, meta, error, src) ?? widget0,
+      onErrorBuilder(context, meta, error, src) ?? widget0,
       loadingBuilder: (context, child, loadingProgress) =>
-          loadingProgress == null
-              ? child
-              : onLoadingBuilder(
-                    context,
-                    meta,
-                    loadingProgress.expectedTotalBytes != null &&
-                            loadingProgress.expectedTotalBytes! > 0
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                    src,
-                  ) ??
-                  child,
+      loadingProgress == null
+          ? child
+          : onLoadingBuilder(
+        context,
+        meta,
+        loadingProgress.expectedTotalBytes != null &&
+            loadingProgress.expectedTotalBytes! > 0
+            ? loadingProgress.cumulativeBytesLoaded /
+            loadingProgress.expectedTotalBytes!
+            : null,
+        src,
+      ) ??
+          child,
       excludeFromSemantics: semanticLabel == null,
       fit: BoxFit.fill,
       image: provider,
@@ -287,33 +287,33 @@ class WidgetFactory {
 
   /// Builds marker widget for a list item.
   Widget? buildListMarker(
-    BuildMetadata meta,
-    TextStyleHtml tsh,
-    String listStyleType,
-    int index,
-  ) {
+      BuildMetadata meta,
+      TextStyleHtml tsh,
+      String listStyleType,
+      int index,
+      ) {
     final text = getListMarkerText(listStyleType, index);
     final style = tsh.style;
     return text.isNotEmpty
         ? RichText(
-            maxLines: 1,
-            softWrap: false,
-            text: TextSpan(style: style, text: text),
-            textDirection: tsh.textDirection,
-          )
+      maxLines: 1,
+      softWrap: false,
+      text: TextSpan(style: style, text: text),
+      textDirection: tsh.textDirection,
+    )
         : listStyleType == kCssListStyleTypeCircle
-            ? HtmlListMarker.circle(style)
-            : listStyleType == kCssListStyleTypeSquare
-                ? HtmlListMarker.square(style)
-                : HtmlListMarker.disc(style);
+        ? HtmlListMarker.circle(style)
+        : listStyleType == kCssListStyleTypeSquare
+        ? HtmlListMarker.square(style)
+        : HtmlListMarker.disc(style);
   }
 
   /// Builds [Padding].
   Widget? buildPadding(
-    BuildMetadata meta,
-    Widget child,
-    EdgeInsetsGeometry padding,
-  ) =>
+      BuildMetadata meta,
+      Widget child,
+      EdgeInsetsGeometry padding,
+      ) =>
       padding == EdgeInsets.zero
           ? child
           : Padding(padding: padding, child: child);
@@ -416,7 +416,7 @@ class WidgetFactory {
   }
 
   /// Prepares [GestureTapCallback].
-  GestureTapCallback? gestureTapCallback(String url) => () => onTapUrl(url);
+  GestureTapCallback? gestureTapCallback(String url, Element element) => () => onTapUrl(url, element);
 
   /// Returns [context]-based dependencies.
   ///
@@ -450,11 +450,11 @@ class WidgetFactory {
   /// final buildOpValue = tsh.textDirection;
   /// ```
   Iterable<dynamic> getDependencies(BuildContext context) => [
-        MediaQuery.of(context),
-        Directionality.of(context),
-        DefaultTextStyle.of(context).style,
-        Theme.of(context),
-      ];
+    MediaQuery.of(context),
+    Directionality.of(context),
+    DefaultTextStyle.of(context).style,
+    Theme.of(context),
+  ];
 
   /// Returns marker text for the specified list style [type] at index [i].
   String getListMarkerText(String type, int i) {
@@ -549,11 +549,11 @@ class WidgetFactory {
   ///
   /// See [OnErrorBuilder].
   Widget? onErrorBuilder(
-    BuildContext context,
-    BuildMetadata meta, [
-    dynamic error,
-    dynamic data,
-  ]) {
+      BuildContext context,
+      BuildMetadata meta, [
+        dynamic error,
+        dynamic data,
+      ]) {
     final callback = _widget?.onErrorBuilder;
     if (callback != null) {
       final result = callback(context, meta.element, error);
@@ -572,11 +572,11 @@ class WidgetFactory {
   ///
   /// See [OnLoadingBuilder].
   Widget? onLoadingBuilder(
-    BuildContext context,
-    BuildMetadata meta, [
-    double? loadingProgress,
-    dynamic data,
-  ]) {
+      BuildContext context,
+      BuildMetadata meta, [
+        double? loadingProgress,
+        dynamic data,
+      ]) {
     final callback = _widget?.onLoadingBuilder;
     if (callback != null) {
       final result = callback(context, meta.element, loadingProgress);
@@ -607,14 +607,14 @@ class WidgetFactory {
   /// Calls [HtmlWidget.onTapUrl] with [url].
   ///
   /// Returns `true` if there is a callback and it has handled the tap.
-  Future<bool> onTapCallback(String url) async {
+  Future<bool> onTapCallback(String url, Element? element) async {
     final callback = _widget?.onTapUrl;
-    return callback != null ? callback(url) : false;
+    return callback != null ? callback(url, element) : false;
   }
 
   /// Handles user tapping a link.
-  Future<bool> onTapUrl(String url) async {
-    final handledViaCallback = await onTapCallback(url);
+  Future<bool> onTapUrl(String url, Element? element) async {
+    final handledViaCallback = await onTapCallback(url, element);
     if (handledViaCallback) {
       return true;
     }
@@ -622,7 +622,7 @@ class WidgetFactory {
     if (url.startsWith('#')) {
       final id = url.substring(1);
       final handledViaAnchor =
-          await onTapAnchor(id, _anchorRegistry.ensureVisible);
+      await onTapAnchor(id, _anchorRegistry.ensureVisible);
       if (handledViaAnchor) {
         return true;
       }
@@ -642,10 +642,10 @@ class WidgetFactory {
           meta.register(tagA);
 
           final tagAColor = _tagAColor ??= (tsh, _) => tsh.copyWith(
-                style: tsh.style.copyWith(
-                  color: tsh.getDependency<ThemeData>().colorScheme.primary,
-                ),
-              );
+            style: tsh.style.copyWith(
+              color: tsh.getDependency<ThemeData>().colorScheme.primary,
+            ),
+          );
 
           meta.tsb.enqueue(tagAColor);
         }
@@ -965,7 +965,7 @@ class WidgetFactory {
       case kCssFontStyle:
         final term = style.term;
         final fontStyle =
-            term != null ? TextStyleOps.fontStyleTryParse(term) : null;
+        term != null ? TextStyleOps.fontStyleTryParse(term) : null;
         if (fontStyle != null) {
           meta.tsb.enqueue(TextStyleOps.fontStyle, fontStyle);
         }
@@ -974,7 +974,7 @@ class WidgetFactory {
       case kCssFontWeight:
         final value = style.value;
         final fontWeight =
-            value != null ? TextStyleOps.fontWeightTryParse(value) : null;
+        value != null ? TextStyleOps.fontWeightTryParse(value) : null;
         if (fontWeight != null) {
           meta.tsb.enqueue(TextStyleOps.fontWeight, fontWeight);
         }
@@ -1035,7 +1035,7 @@ class WidgetFactory {
       case kCssWhitespace:
         final term = style.term;
         final whitespace =
-            term != null ? TextStyleOps.whitespaceTryParse(term) : null;
+        term != null ? TextStyleOps.whitespaceTryParse(term) : null;
         if (whitespace != null) {
           meta.tsb.enqueue(TextStyleOps.whitespace, whitespace);
         }
@@ -1141,7 +1141,7 @@ class WidgetFactory {
       },
       onTreeFlattening: (meta, tree) {
         final widget = WidgetPlaceholder('#$id').wrapWith(
-          (context, _) => SizedBox(
+              (context, _) => SizedBox(
             height: meta.tsb.build(context).style.fontSize,
             key: anchor,
           ),
@@ -1169,7 +1169,7 @@ class WidgetFactory {
       onWidgets: (meta, widgets) {
         return listOrNull(
           buildColumnPlaceholder(meta, widgets)?.wrapWith(
-            (context, child) => SizedBox(key: anchor, child: child),
+                (context, child) => SizedBox(key: anchor, child: child),
           ),
         );
       },

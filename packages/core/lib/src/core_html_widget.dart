@@ -54,7 +54,7 @@ class HtmlWidget extends StatefulWidget {
   ///
   /// Returns `true` if the url has been handled,
   /// the default handler will be skipped.
-  final FutureOr<bool> Function(String)? onTapUrl;
+  final FutureOr<bool> Function(String, Element?)? onTapUrl;
 
   /// The values that should trigger rebuild.
   ///
@@ -71,12 +71,12 @@ class HtmlWidget extends StatefulWidget {
   /// - `webView`
   /// - `webViewJs`
   RebuildTriggers get rebuildTriggers => RebuildTriggers([
-        html,
-        baseUrl,
-        buildAsync,
-        enableCaching,
-        if (_rebuildTriggers != null) _rebuildTriggers,
-      ]);
+    html,
+    baseUrl,
+    buildAsync,
+    enableCaching,
+    if (_rebuildTriggers != null) _rebuildTriggers,
+  ]);
   final RebuildTriggers? _rebuildTriggers;
 
   /// The render mode.
@@ -94,22 +94,22 @@ class HtmlWidget extends StatefulWidget {
   ///
   /// The [html] argument must not be null.
   const HtmlWidget(
-    this.html, {
-    this.baseUrl,
-    this.buildAsync,
-    this.customStylesBuilder,
-    this.customWidgetBuilder,
-    this.enableCaching,
-    this.factoryBuilder,
-    Key? key,
-    this.onErrorBuilder,
-    this.onLoadingBuilder,
-    this.onTapImage,
-    this.onTapUrl,
-    RebuildTriggers? rebuildTriggers,
-    this.renderMode = RenderMode.column,
-    this.textStyle,
-  })  : _rebuildTriggers = rebuildTriggers,
+      this.html, {
+        this.baseUrl,
+        this.buildAsync,
+        this.customStylesBuilder,
+        this.customWidgetBuilder,
+        this.enableCaching,
+        this.factoryBuilder,
+        Key? key,
+        this.onErrorBuilder,
+        this.onLoadingBuilder,
+        this.onTapImage,
+        this.onTapUrl,
+        RebuildTriggers? rebuildTriggers,
+        this.renderMode = RenderMode.column,
+        this.textStyle,
+      })  : _rebuildTriggers = rebuildTriggers,
         super(key: key);
 
   @override
@@ -209,7 +209,7 @@ class HtmlWidgetState extends State<HtmlWidget> {
   }
 
   /// Scrolls to make sure the requested anchor is as visible as possible.
-  Future<bool> scrollToAnchor(String id) => _wf.onTapUrl('#$id');
+  Future<bool> scrollToAnchor(String id) => _wf.onTapUrl('#$id', null);
 
   Future<Widget> _buildAsync() async {
     final domNodes = await compute(_parseHtml, widget.html);
@@ -287,8 +287,8 @@ Widget _buildBody(HtmlWidgetState state, dom.NodeList domNodes) {
   )..addBitsFromNodes(domNodes);
 
   return wf
-          .buildColumnPlaceholder(rootMeta, tree.build())
-          ?.wrapWith(wf.buildBodyWidget) ??
+      .buildColumnPlaceholder(rootMeta, tree.build())
+      ?.wrapWith(wf.buildBodyWidget) ??
       widget0;
 }
 

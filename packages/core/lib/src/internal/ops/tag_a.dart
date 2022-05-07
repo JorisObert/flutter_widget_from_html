@@ -10,44 +10,44 @@ class TagA {
   TagA(this.wf);
 
   BuildOp get buildOp => BuildOp(
-        defaultStyles: (_) => const {
-          kCssTextDecoration: kCssTextDecorationUnderline,
-        },
-        onTreeFlattening: (meta, tree) {
-          final onTap = _gestureTapCallback(meta);
-          if (onTap == null) {
-            return;
-          }
+    defaultStyles: (_) => const {
+      kCssTextDecoration: kCssTextDecorationUnderline,
+    },
+    onTreeFlattening: (meta, tree) {
+      final onTap = _gestureTapCallback(meta);
+      if (onTap == null) {
+        return;
+      }
 
-          for (final bit in tree.bits.toList(growable: false)) {
-            if (bit is WidgetBit) {
-              bit.child.wrapWith(
+      for (final bit in tree.bits.toList(growable: false)) {
+        if (bit is WidgetBit) {
+          bit.child.wrapWith(
                 (_, child) => wf.buildGestureDetector(meta, child, onTap),
-              );
-            } else if (bit is! WhitespaceBit) {
-              _TagABit(bit.parent, bit.tsb, onTap).insertAfter(bit);
-            }
-          }
-        },
-        onWidgets: (meta, widgets) {
-          final onTap = _gestureTapCallback(meta);
-          if (onTap == null) {
-            return widgets;
-          }
-
-          return listOrNull(
-            wf.buildColumnPlaceholder(meta, widgets)?.wrapWith(
-                  (_, child) => wf.buildGestureDetector(meta, child, onTap),
-                ),
           );
-        },
-        onWidgetsIsOptional: true,
+        } else if (bit is! WhitespaceBit) {
+          _TagABit(bit.parent, bit.tsb, onTap).insertAfter(bit);
+        }
+      }
+    },
+    onWidgets: (meta, widgets) {
+      final onTap = _gestureTapCallback(meta);
+      if (onTap == null) {
+        return widgets;
+      }
+
+      return listOrNull(
+        wf.buildColumnPlaceholder(meta, widgets)?.wrapWith(
+              (_, child) => wf.buildGestureDetector(meta, child, onTap),
+        ),
       );
+    },
+    onWidgetsIsOptional: true,
+  );
 
   GestureTapCallback? _gestureTapCallback(BuildMetadata meta) {
     final href = meta.element.attributes[kAttributeAHref];
     return href != null
-        ? wf.gestureTapCallback(wf.urlFull(href) ?? href)
+        ? wf.gestureTapCallback(wf.urlFull(href) ?? href, meta.element as Element)
         : null;
   }
 }

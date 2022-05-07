@@ -59,10 +59,10 @@ const kCssWhitespacePre = 'pre';
 const kCssWhitespaceNormal = 'normal';
 
 void wrapTree(
-  BuildTree tree, {
-  BuildBit Function(BuildTree parent)? append,
-  BuildBit Function(BuildTree parent)? prepend,
-}) {
+    BuildTree tree, {
+      BuildBit Function(BuildTree parent)? append,
+      BuildBit Function(BuildTree parent)? prepend,
+    }) {
   final children = tree.directChildren;
   final first0 = children.isEmpty ? null : children.first;
   final first = (first0 is BuildTree ? first0.first : null) ?? first0;
